@@ -35,6 +35,7 @@ async fn restart(req_body: String) -> impl Responder {
         .expect("Failed to execute command");
     println!("pihole dns restarting\nreq body: {}", req_body);
     HttpResponse::Ok().body(output.stdout)
+}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
