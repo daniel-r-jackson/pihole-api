@@ -27,6 +27,15 @@ async fn disable(req_body: String) -> impl Responder {
     HttpResponse::Ok().body(output.stdout)
 }
 
+#[post("/restart")]
+async fn restart(req_body: String) -> impl Responder {
+    let output = Command::new("pihole")
+        .arg("restartdns")
+        .output()
+        .expect("Failed to execute command");
+    println!("pihole dns restarting\nreq body: {}", req_body);
+    HttpResponse::Ok().body(output.stdout)
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
@@ -34,6 +43,7 @@ async fn main() -> std::io::Result<()> {
             .service(hello)
             .service(disable)
             .service(enable)
+            .service(restart)
     })
     .bind(("10.0.4.123", 7878))?
     .run()
