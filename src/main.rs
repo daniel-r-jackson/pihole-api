@@ -12,6 +12,11 @@ async fn enable(req_body: String) -> impl Responder {
         .arg("enable")
         .output()
         .expect("Failed to execute command");
+    let output = Command::new("pihole")
+        .arg("restartdns")
+        .arg("reload")
+        .output()
+        .expect("Failed to execute command");
     println!("pihole enabled\nreq body: {}", req_body);
     HttpResponse::Ok().body(output.stdout)
 }
@@ -21,6 +26,11 @@ async fn disable(req_body: String) -> impl Responder {
     let output = Command::new("pihole")
         .arg("disable")
         .arg("5m")
+        .output()
+        .expect("Failed to execute command");
+    let output = Command::new("pihole")
+        .arg("restartdns")
+        .arg("reload")
         .output()
         .expect("Failed to execute command");
     println!("pihole disabled 5m\nreq body: {}", req_body);
@@ -46,7 +56,7 @@ async fn main() -> std::io::Result<()> {
             .service(enable)
             .service(restart)
     })
-    .bind(("10.0.4.123", 7878))?
+    .bind(("0.0.0.0", 7878))?
     .run()
     .await
 }
