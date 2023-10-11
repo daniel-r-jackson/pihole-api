@@ -12,9 +12,8 @@ async fn enable(req_body: String) -> impl Responder {
         .arg("enable")
         .output()
         .expect("Failed to execute command");
-    let output = Command::new("pihole")
+    Command::new("pihole")
         .arg("restartdns")
-        .arg("reload")
         .output()
         .expect("Failed to execute command");
     println!("pihole enabled\nreq body: {}", req_body);
@@ -28,9 +27,8 @@ async fn disable(req_body: String) -> impl Responder {
         .arg("5m")
         .output()
         .expect("Failed to execute command");
-    let output = Command::new("pihole")
+    Command::new("pihole")
         .arg("restartdns")
-        .arg("reload")
         .output()
         .expect("Failed to execute command");
     println!("pihole disabled 5m\nreq body: {}", req_body);
